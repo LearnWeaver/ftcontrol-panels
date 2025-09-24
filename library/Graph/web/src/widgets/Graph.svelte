@@ -98,9 +98,8 @@
     const all = Object.values(selectedGraphs).flat()
     if (all.length === 0) return {}
 
-    const now = Date.now()
-    const timeStart = now - timeWindow * 1000
-    const timeEnd = now
+    const minTimestamp = Math.min(...all.map((p) => p.timestamp))
+    const maxTimestamp = Math.max(...all.map((p) => p.timestamp))
 
     const globalDataMin = Math.min(...all.map((p) => p.value))
     const globalDataMax = Math.max(...all.map((p) => p.value))
@@ -109,8 +108,8 @@
     for (const [key, list] of Object.entries(selectedGraphs)) {
       const xs = normalize(
         list.map((p) => p.timestamp),
-        timeStart,
-        timeEnd,
+        minTimestamp,
+        maxTimestamp,
         [0, 100]
       )
       const ys = normalize(
